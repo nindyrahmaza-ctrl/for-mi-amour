@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Cintaku - Dari Nindy</title>
+    
+    <script>
+        // FUNGSI UTAMA: BUKA WEBSITE
+        window.openWebsite = function() {
+            document.getElementById('cover').style.display = 'none';
+            var mainContent = document.getElementById('main-content');
+            mainContent.style.display = 'block';
+            setTimeout(function() {
+                mainContent.style.opacity = '1';
+                if(!window.typed) startTyping();
+            }, 50);
+
+            // Coba putar musik
+            var audio = document.getElementById('bg-audio');
+            if (audio) {
+                audio.play().then(function() {
+                    document.getElementById('music-disk').style.animationPlayState = 'running';
+                }).catch(function(e) { console.log("Autoplay blocked"); });
+            }
+        };
+
+        // FUNGSI KONTROL MUSIK
+        window.toggleMusic = function() {
+            var audio = document.getElementById('bg-audio');
+            var disk = document.getElementById('music-disk');
+            if (audio.paused) {
+                audio.play();
+                disk.style.animationPlayState = 'running';
+                document.getElementById('music-text').innerText = "Putar Musik";
+            } else {
+                audio.pause();
+                disk.style.animationPlayState = 'paused';
+                document.getElementById('music-text').innerText = "Musik Berhenti";
+            }
+        };
+
+        // FUNGSI PINDAH HALAMAN
+        window.switchPage = function(pageId) {
+            var pages = document.querySelectorAll('.page');
+            pages.forEach(function(p) { p.style.display = 'none'; });
+            document.getElementById(pageId).style.display = 'block';
+            
+            var btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(function(b) { b.classList.remove('active'); });
+            event.currentTarget.classList.add('active');
+        };
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Sacramento&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root { --pink: #FF8A8A; --dark: #4A1E35; --light: #FAF6F0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--dark); overflow-x: hidden; }
+        
+        /* COVER STYLING */
+        #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--light); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center; padding: 20px; }
+        .open-btn { background: var(--pink); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(255,138,138,0.4); margin-top: 20px; }
+        
+        /* CONTENT STYLING */
+        #main-content { display: none; opacity: 0; transition: opacity 1s; padding: 20px 20px 100px 20px; }
+        .page { display: none; max-width: 600px; margin: 80px auto 0; text-align: center; }
+        .page.active-default { display: block; }
+
+        /* DECORATION */
+        .heart { position: fixed; color: var(--pink); opacity: 0.2; pointer-events: none; z-index: -1; animation: float 10s linear infinite; }
+        @keyframes float { 0% { transform: translateY(100vh) rotate(0); } 100% { transform: translateY(-10vh) rotate(360deg); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* NAVBAR */
+        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 10px; border-radius: 50px; display: flex; gap: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); z-index: 900; }
+        .nav-btn { border: none; background: none; padding: 10px 15px; border-radius: 25px; cursor: pointer; color: #888; font-weight: bold; }
+        .nav-btn.active { background: var(--pink); color: white; }
+
+        /* CARDS */
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); line-height: 1.8; }
+        .music-disk-ui { position: fixed; top: 20px; right: 20px; background: white; padding: 10px; border-radius: 50px; display: flex; align-items: center; gap: 10px; cursor: pointer; z-index: 1001; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #music-disk { width: 30px; height: 30px; background: var(--pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; animation: spin 3s linear infinite; animation-play-state: paused; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-audio" loop><source src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-493.mp3"></audio>
+
+    <div class="music-disk-ui" onclick="window.toggleMusic()">
+        <div id="music-disk"><i class="fa-solid fa-music"></i></div>
+        <span id="music-text" style="font-size: 12px; font-weight: bold;">Mulai Musik</span>
+    </div>
+
+    <div id="cover">
+        <h1 style="font-family:'Sacramento'; font-size: 4rem; color: var(--pink);">Pesan Nindy</h1>
+        <h2 style="font-family:'Playfair Display'; margin: 10px 0;">Untuk Sayangku Terkasih</h2>
+        <p style="color: #666; max-width: 300px;">Sebuah kejutan kecil yang aku buat khusus untuk duniaku.</p>
+        <button class="open-btn" onclick="window.openWebsite()">Buka Surat Cinta <i class="fa-solid fa-heart"></i></button>
+    </div>
+
+    <div id="main-content">
+        <nav class="nav">
+            <button class="nav-btn active" onclick="window.switchPage('p1')">Surat</button>
+            <button class="nav-btn" onclick="window.switchPage('p2')">Alasan</button>
+            <button class="nav-btn" onclick="window.switchPage('p3')">Impian</button>
+        </nav>
+
+        <section id="p1" class="page active-default">
+            <div class="card">
+                <h2 style="font-family:'Playfair Display'; margin-bottom: 20px;">Halo Sayang...</h2>
+                <div id="typing-text" style="text-align: left;"></div>
+                <p style="font-family:'Sacramento'; font-size: 2rem; text-align: right; margin-top: 20px;">Nindy</p>
+            </div>
+        </section>
+
+        <section id="p2" class="page">
+            <h2 style="margin-bottom: 20px;">Mengapa Aku Sayang?</h2>
+            <div class="card" style="margin-bottom: 15px;">Kamu selalu jadi pendengar yang sabar.</div>
+            <div class="card" style="margin-bottom: 15px;">Senyummu adalah obat paling ampuh buatku.</div>
+            <div class="card">Kamu membuatku merasa aman dan dihargai.</div>
+        </section>
+
+        <section id="p3" class="page">
+            <h2 style="margin-bottom: 20px;">Impian Kita</h2>
+            <div class="card" style="text-align: left;">
+                <p>✅ Bahagia terus berdua</p>
+                <p>✅ Jalan-jalan ke tempat impian</p>
+                <p>✅ Menua bersama dalam cinta</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Animasi Hati
+        setInterval(function() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 10000);
+        }, 1000);
+
+        // Efek Ketikan
+        var letter = "Terima kasih ya sudah hadir di hidupku. Kamu adalah hal terbaik yang pernah aku miliki. Aku berharap kita bisa terus saling menjaga, saling mendukung, dan selalu bersama melewati setiap hari dengan penuh tawa. Aku sangat menyayangimu!";
+        window.typed = false;
+        function startTyping() {
+            window.typed = true;
+            var i = 0;
+            var speed = 50;
+            function type() {
+                if (i < letter.length) {
+                    document.getElementById("typing-text").innerHTML += letter.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
